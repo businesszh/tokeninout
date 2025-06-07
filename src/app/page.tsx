@@ -6,14 +6,27 @@ import ResourceList from '@/components/ResourceList'
 import ArticleList from '@/components/ArticleList'
 import { Metadata } from 'next'
 
+type Resource = {
+  name: string;
+  description: string;
+  url: string;
+}
+
+type Article = {
+  id: string;
+  title: string;
+  date: string;
+  description: string;
+}
+
 export const metadata: Metadata = {
   title: 'GitBase - Open Source Dynamic Website CMS Without Database',
   description: 'A Next.js site with Tailwind & Shadcn/UI, using GitHub API for content management. No database needed for dynamic updates.',
 }
 
 export default function Home() {
-  let resources = []
-  let allPostsData = []
+  let resources: Resource[] = []
+  let allPostsData: Article[] = []
 
   try {
     const resourcesPath = path.join(process.cwd(), 'data', 'json', 'resources.json')
