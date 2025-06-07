@@ -75,15 +75,6 @@ export function Navigation() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link
-            href="https://github.com/qiayue/gitbase"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Github className="h-5 w-5" />
-            <span className="sr-only">GitHub</span>
-          </Link>
           {!isLoading && (
             isLoggedIn ? (
               <>
