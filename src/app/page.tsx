@@ -20,8 +20,8 @@ type Article = {
 }
 
 export const metadata: Metadata = {
-  title: 'GitBase - Open Source Dynamic Website CMS Without Database',
-  description: 'A Next.js site with Tailwind & Shadcn/UI, using GitHub API for content management. No database needed for dynamic updates.',
+  title: 'TokenInout.org - 安全、便捷的加密货币出入金指南',
+  description: 'TokenInout.org 致力于提供全面、安全的法币与 USDT 之间出入金的指南。无论您是初学者还是经验丰富的用户，我们都将帮助您了解和掌握安全、便捷的兑换流程，让您的加密资产流通无忧。',
 }
 
 export default function Home() {
@@ -41,11 +41,11 @@ export default function Home() {
     <div className="container mx-auto py-12 space-y-16">
       <section className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-          GitBase
+          TokenInout.org
         </h1>
-        <h2 className="text-2xl tracking-tighter sm:text-3xl md:text-3xl lg:text-3xl">Open Source Dynamic Website CMS Without Database</h2>
+        <h2 className="text-2xl tracking-tighter sm:text-3xl md:text-3xl lg:text-3xl">安全、便捷的加密货币出入金指南</h2>
         <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-          GitBase is a dynamic, database-free website built with Next.js, Tailwind CSS, and Shadcn/UI, featuring a content management system powered by the GitHub API for seamless updates and administration.
+          TokenInout.org 致力于提供全面、安全的法币与 USDT 之间出入金的指南。无论您是初学者还是经验丰富的用户，我们都将帮助您了解和掌握安全、便捷的兑换流程，让您的加密资产流通无忧。
         </p>
       </section>
 
