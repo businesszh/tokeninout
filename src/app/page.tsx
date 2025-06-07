@@ -12,9 +12,17 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-  const resourcesPath = path.join(process.cwd(), 'data', 'json', 'resources.json')
-  const resources = JSON.parse(fs.readFileSync(resourcesPath, 'utf8'))
-  const allPostsData = getSortedPostsData().slice(0, 6)
+  let resources = []
+  let allPostsData = []
+
+  try {
+    const resourcesPath = path.join(process.cwd(), 'data', 'json', 'resources.json')
+    const fileContent = fs.readFileSync(resourcesPath, 'utf8')
+    resources = JSON.parse(fileContent)
+    allPostsData = getSortedPostsData().slice(0, 6)
+  } catch (error) {
+    console.error('Error loading data:', error)
+  }
 
   return (
     <div className="container mx-auto py-12 space-y-16">
@@ -28,8 +36,21 @@ export default function Home() {
         </p>
       </section>
 
-      <ResourceList resources={resources} />
-      <ArticleList articles={allPostsData} />
+      {resources.length > 0 ? (
+        <ResourceList resources={resources} />
+      ) : (
+        <div className="text-center text-gray-500">
+          <p>暂时无法加载资源，请稍后再试</p>
+        </div>
+      )}
+      
+      {allPostsData.length > 0 ? (
+        <ArticleList articles={allPostsData} />
+      ) : (
+        <div className="text-center text-gray-500">
+          <p>暂时无法加载文章，请稍后再试</p>
+        </div>
+      )}
     </div>
   )
 }

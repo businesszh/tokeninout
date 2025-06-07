@@ -1,15 +1,28 @@
 import { NextResponse } from 'next/server';
 import { Octokit } from '@octokit/rest';
 import matter from 'gray-matter';
+import fs from 'fs';
+import path from 'path';
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN
 });
 
-const owner = process.env.GITHUB_OWNER;
-const repo = process.env.GITHUB_REPO;
+const owner = 'businesszh';
+const repo = 'tokeninout';
 const articlesJsonPath = 'data/json/articles.json';
 const mdFolderPath = 'data/md';
+const localArticlesJsonPath = path.join(process.cwd(), articlesJsonPath);
+
+function getLocalArticles() {
+  try {
+    const content = fs.readFileSync(localArticlesJsonPath, 'utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.error('Error reading local articles:', error);
+    return [];
+  }
+}
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -35,26 +48,48 @@ export async function GET(request) {
           path: data.path,
         });
       } catch (error) {
-        console.error('Error fetching article:', error);
-        return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 });
+        console.error('Error fetching article from GitHub:', error);
+        // 尝试从本地读取
+        try {
+          const localPath = path.join(process.cwd(), decodeURIComponent(path));
+          const content = fs.readFileSync(localPath, 'utf8');
+          const { data: frontMatter, content: articleContent } = matter(content);
+          return NextResponse.json({
+            ...frontMatter,
+            content: articleContent,
+            path: path,
+          });
+        } catch (localError) {
+          console.error('Error reading local article:', localError);
+          return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 });
+        }
       }
     } else if (sync === 'true') {
       await syncArticles();
     }
 
-    const { data } = await octokit.repos.getContent({
-      owner,
-      repo,
-      path: articlesJsonPath,
-    });
+    // 获取文章列表
+    try {
+      const { data } = await octokit.repos.getContent({
+        owner,
+        repo,
+        path: articlesJsonPath,
+      });
 
-    const content = Buffer.from(data.content, 'base64').toString('utf8');
-    const articles = JSON.parse(content);
-
-    return NextResponse.json(articles);
+      const content = Buffer.from(data.content, 'base64').toString('utf8');
+      const articles = JSON.parse(content);
+      return NextResponse.json(articles);
+    } catch (error) {
+      console.error('Error fetching articles from GitHub:', error);
+      // 从本地文件读取
+      const localArticles = getLocalArticles();
+      return NextResponse.json(localArticles);
+    }
   } catch (error) {
-    console.error('Error fetching articles:', error);
-    return NextResponse.json({ error: 'Failed to fetch articles' }, { status: 500 });
+    console.error('Error in GET handler:', error);
+    // 最后的回退：返回本地文件
+    const localArticles = getLocalArticles();
+    return NextResponse.json(localArticles);
   }
 }
 
