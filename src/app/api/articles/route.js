@@ -27,16 +27,16 @@ function getLocalArticles() {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const sync = searchParams.get('sync');
-  const path = searchParams.get('path');
+  const articlePath = searchParams.get('path');
 
   try {
-    if (path) {
+    if (articlePath) {
       // Fetch single article
       try {
         const { data } = await octokit.repos.getContent({
           owner,
           repo,
-          path: decodeURIComponent(path),
+          path: decodeURIComponent(articlePath),
         });
 
         const content = Buffer.from(data.content, 'base64').toString('utf8');
@@ -51,13 +51,13 @@ export async function GET(request) {
         console.error('Error fetching article from GitHub:', error);
         // 尝试从本地读取
         try {
-          const localPath = path.join(process.cwd(), decodeURIComponent(path));
+          const localPath = path.join(process.cwd(), decodeURIComponent(articlePath));
           const content = fs.readFileSync(localPath, 'utf8');
           const { data: frontMatter, content: articleContent } = matter(content);
           return NextResponse.json({
             ...frontMatter,
             content: articleContent,
-            path: path,
+            path: articlePath,
           });
         } catch (localError) {
           console.error('Error reading local article:', localError);
