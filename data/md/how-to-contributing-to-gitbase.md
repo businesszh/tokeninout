@@ -3,7 +3,7 @@ title: Contributing to GitBase
 description: >-
   Hi, I'm Qiayue, creator of GitBase. I'm excited to welcome you to our project
   and look forward to your contributions in making GitBase even better!
-date: '2024-08-16T03:57:46.153Z'
+date: "2024-08-16"
 ---
 # Contributing to GitBase
 

@@ -1,7 +1,7 @@
 ---
 title: Configuring Environment Variables for GitBase
 description: How to configure GitBase environment variables
-date: '2024-08-11T13:08:05.474Z'
+date: "2024-08-11"
 ---
 # Configuring Environment Variables for GitBase
 
