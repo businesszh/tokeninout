@@ -6,8 +6,8 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN
 });
 
-const owner = process.env.GITHUB_OWNER;
-const repo = process.env.GITHUB_REPO;
+const owner = 'businesszh';
+const repo = 'tokeninout';
 const articlesJsonPath = 'data/json/articles.json';
 const mdFolderPath = 'data/md';
 
